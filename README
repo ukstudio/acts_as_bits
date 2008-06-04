@@ -1,0 +1,47 @@
+ActsAsBits
+==========
+
+A plugin to maintain massive flags in one column.
+
+
+Table Definition
+================
+
+Add "string" column into your model table.
+
+  ALTER TABLE users ADD operations varchar(255);
+
+
+Model Definition
+================
+
+  class User < ActiveRecord::Base
+    acts_as_bits :operations, %w( create read update delete )
+  end
+
+
+Usage
+=====
+
+  user = User.new
+  user.create?        # => false
+  user.create = true
+  user.delete = true
+  user.operations     # => "1001"
+  user.create?        # => true
+
+  User.create!(:update => true, :read=>false)
+
+
+Search
+======
+
+Finding methods work only on PostgreSQL, MySQL and SQL Server because we use "substring" function
+
+  User.find(:all, :conditions=>{:read=>true})
+
+
+Author
+======
+
+moriq and maiha
