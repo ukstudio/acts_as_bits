@@ -1,0 +1,20 @@
+bits_00:
+  id: 1
+  flags: "00"
+  positions: "0000"
+  blank_flags: "0 0"
+bits_01:
+  id: 2
+  flags: "01"
+  positions: "1111"
+  blank_flags: "0 1"
+bits_10:
+  id: 3
+  flags: "10"
+  positions: "0101"
+  blank_flags: "1 0"
+bits_11:
+  id: 4
+  flags: "11"
+  positions: ""
+  blank_flags: "1 1"
