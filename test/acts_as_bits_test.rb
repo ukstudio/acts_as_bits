@@ -139,4 +139,15 @@ class ActsAsBitsTest < Test::Unit::TestCase
     assert_equal 1, Mixin.count(:conditions=>conditions)
     assert_equal 1, Mixin.find(:all, :conditions=>conditions).size
   end
+
+  def test_set_all
+    obj = Mixin.new
+    assert_equal "00", obj.flags
+
+    obj.flags = true
+    assert_equal "11", obj.flags
+
+    obj.flags = false
+    assert_equal "00", obj.flags
+  end
 end

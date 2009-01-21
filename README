@@ -41,6 +41,30 @@ Finding methods work only on PostgreSQL, MySQL and SQL Server because we use "su
   User.find(:all, :conditions=>{:read=>true})
 
 
+Advanced
+========
+
+"(column_name)=" enables to fill up values with argument that is true/false.
+This is useful for initial setting like all allow/deny.
+
+  user = User.new
+  user.operations     # => "0000"
+
+  # set all green
+  user.operations = true
+  user.operations     # => "1111"
+
+  # set all red
+  user.operations = false
+  user.operations     # => "0000"
+
+
+Changes
+=======
+
+0.2: support dirty columns for Rails2
+
+
 Author
 ======
 

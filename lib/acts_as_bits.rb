@@ -2,11 +2,14 @@ require 'active_record'
 
 # ActsAsBits
 module ActsAsBits
-  def self.append_features(base)
-    base.class_eval do
-      extend ClassMethods
-      extend (respond_to?(:sanitize_sql_hash_for_conditions) ? Rails2x : Rails1x)
+  def self.rails2?
+    ActiveRecord::Base.respond_to?(:sanitize_sql_hash_for_conditions)
+  end
 
+  def self.append_features(base)
+    base.extend ClassMethods
+    base.extend(rails2? ? Rails2x : Rails1x)
+    base.class_eval do
       def self.sanitize_sql_hash(*args)
         sanitize_sql_hash_with_aab(*args)
       end
@@ -79,6 +82,17 @@ module ActsAsBits
         end
       end
 
+      # true/false fills all values by itself
+      module_eval <<-end_eval
+        def #{composed_name}=(value)
+          case value
+          when true  then super("1"*#{singular_name}_names.size)
+          when false then super("0"*#{singular_name}_names.size)
+          else            super
+          end
+        end
+      end_eval
+
       bit_names.each_with_index do |(name, label), index|
         next if name.blank?
 
@@ -102,12 +116,17 @@ module ActsAsBits
               end
 
               def #{name}=(v)
+                v = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(v) ? ?1 : ?0
+
                 # expand target string automatically
                 if #{composed_name}.size < #{singular_name}_names.size
                    #{composed_name} << "0" * (#{singular_name}_names.size - #{composed_name}.size)
                 end
 
-                #{composed_name}[#{index}] = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(v) ? ?1 : ?0
+                value = #{composed_name}.dup
+                value[#{index}] = v
+                write_attribute("#{composed_name}", value)
+                return v
               end
         end_eval
 
