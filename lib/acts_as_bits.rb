@@ -57,7 +57,14 @@ module ActsAsBits
           "#{bit_column} %s '1'" % (flag ? '=' : '<>')
         else
           values << value
-          "#{table_name}.#{connection.quote_column_name(attr)} #{attribute_condition(value)}"
+          case ActiveRecord::Base.method(:attribute_condition).arity
+          when 1                # Rails 2.0-2.2
+            "#{table_name}.#{connection.quote_column_name(attr)} #{attribute_condition(value)}"
+          when 2                # Rails 2.3-
+            attribute_condition("#{table_name}.#{connection.quote_column_name(attr)}", value)
+          else
+            raise NotImplementedError, "unknown AR::Base#attribute_condition type"
+          end
         end
       end.join(' AND ')
       replace_bind_variables(conditions, expand_range_bind_variables(values))

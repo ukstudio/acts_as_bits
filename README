@@ -1,7 +1,7 @@
 ActsAsBits
 ==========
 
-A plugin to maintain massive flags in one column.
+ActiveRecord plugin that maintains massive flags in one column
 
 
 Table Definition
@@ -59,10 +59,12 @@ This is useful for initial setting like all allow/deny.
   user.operations     # => "0000"
 
 
-Changes
-=======
+Environment
+===========
 
-0.2: support dirty columns for Rails2
+  tested on
+
+  * Rails 1.2.6-2.3.2
 
 
 Author
