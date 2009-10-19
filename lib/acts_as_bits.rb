@@ -38,7 +38,7 @@ module ActsAsBits
   end
 
   module Rails2x
-    def sanitize_sql_hash_with_aab(attrs)
+    def sanitize_sql_hash_with_aab(attrs, default_table_name = nil)
       values = []
       conditions = attrs.keys.map do |key|
         value = attrs[key]
@@ -49,7 +49,7 @@ module ActsAsBits
           table_name, attr = attr.split('.', 2)
           table_name = connection.quote_table_name(table_name)
         else
-          table_name = quoted_table_name
+          table_name = default_table_name || quoted_table_name
         end
 
         if bit_column = bit_columns_hash[attr]

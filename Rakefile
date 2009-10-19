@@ -33,7 +33,7 @@ AUTHOR = "maiha"
 EMAIL = "maiha@wota.jp"
 HOMEPAGE = "http://github.com/maiha/acts_as_bits"
 SUMMARY = "ActiveRecord plugin that maintains massive flags in one column"
-GEM_VERSION = "0.2.1"
+GEM_VERSION = "0.2.2"
 
 spec = Gem::Specification.new do |s|
 #  s.rubyforge_project = 'merb'
