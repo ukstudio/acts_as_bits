@@ -7,7 +7,9 @@ module ActsAsBits
   end
 
   def self.rails3?
-    (Object.const_defined? :Rails3) && Rails.version >= '3.0.0'
+     Rails.version >= '3.0.0'
+  rescue
+    false
   end
 
   def self.append_features(base)
