@@ -6,8 +6,14 @@ module ActsAsBits
     ActiveRecord::Base.respond_to?(:sanitize_sql_hash_for_conditions)
   end
 
+  def self.rails3?
+    (Object.const_defined? :Rails3) && Rails.version >= '3.0.0'
+  end
+
   def self.append_features(base)
     base.extend ClassMethods
+    return if rails3?
+
     base.extend(rails2? ? Rails2x : Rails1x)
     base.class_eval do
       def self.sanitize_sql_hash(*args)
