@@ -145,8 +145,8 @@ module ActsAsBits
               end
         end_eval
 
-        compacted_bit_names = bit_names.select{|(i,)| !i.blank?}
-        column_names = compacted_bit_names.map{|(i,)| i.to_s}
+        compacted_bit_names = bit_names.select{|(i,_)| !i.blank?}
+        column_names = compacted_bit_names.map{|(i,_)| i.to_s}
         label_names  = compacted_bit_names.map{|(n,i)| i.to_s}
 
         module_eval <<-end_eval
