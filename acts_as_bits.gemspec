@@ -9,12 +9,19 @@ Gem::Specification.new do |s|
   s.date = %q{2009-10-19}
   s.description = %q{ActiveRecord plugin that maintains massive flags in one column}
   s.email = %q{maiha@wota.jp}
-  s.extra_rdoc_files = ["README"]
-  s.files = ["README", "Rakefile", "lib/acts_as_bits.rb", "test/database.yml", "test/fixtures", "test/fixtures/mixin.rb", "test/fixtures/mixins.yml", "test/schema.rb", "test/prefix_test.rb", "test/acts_as_bits_test.rb", "test/spec_helper.rb", "test/test_helper.rb", "test/dirty_spec.rb"]
+  s.extra_rdoc_files = ["README.md"]
+  s.files = `git ls-files -z`.split("\x0")
   s.homepage = %q{http://github.com/maiha/acts_as_bits}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{ActiveRecord plugin that maintains massive flags in one column}
+
+  s.add_development_dependency "bundler", "~> 1.5"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "activesupport", "> 3.0.0"
+  s.add_development_dependency "activerecord", "> 3.0.0"
+  s.add_development_dependency "pg"
+  s.add_development_dependency "sqlite3"
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

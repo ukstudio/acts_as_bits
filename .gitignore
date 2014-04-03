@@ -1,0 +1,4 @@
+Gemfile.lock
+pkg/*
+test/*.log
+test/*.db
