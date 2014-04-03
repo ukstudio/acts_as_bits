@@ -6,8 +6,16 @@ module ActsAsBits
     ActiveRecord::Base.respond_to?(:sanitize_sql_hash_for_conditions)
   end
 
+  def self.rails3?
+     Rails.version >= '3.0.0'
+  rescue
+    false
+  end
+
   def self.append_features(base)
     base.extend ClassMethods
+    return if rails3?
+
     base.extend(rails2? ? Rails2x : Rails1x)
     base.class_eval do
       def self.sanitize_sql_hash(*args)
@@ -137,8 +145,8 @@ module ActsAsBits
               end
         end_eval
 
-        compacted_bit_names = bit_names.select{|(i,)| !i.blank?}
-        column_names = compacted_bit_names.map{|(i,)| i.to_s}
+        compacted_bit_names = bit_names.select{|(i,_)| !i.blank?}
+        column_names = compacted_bit_names.map{|(i,_)| i.to_s}
         label_names  = compacted_bit_names.map{|(n,i)| i.to_s}
 
         module_eval <<-end_eval

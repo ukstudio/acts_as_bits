@@ -8,7 +8,9 @@ require 'active_record/fixtures'
 
 config = YAML::load_file(__DIR__ + '/database.yml')
 ActiveRecord::Base.logger = Logger.new(__DIR__ + "/debug.log")
-ActiveRecord::Base.colorize_logging = false
+if ActiveRecord::Base.respond_to? :colorize_loging=
+  ActiveRecord::Base.colorize_logging = false
+end
 ActiveRecord::Base.configurations = config
 ActiveRecord::Base.establish_connection(ENV['DB'] || 'postgresql')
 
