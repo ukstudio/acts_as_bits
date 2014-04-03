@@ -21,7 +21,9 @@ require __DIR__ + '/../init'
 load(__DIR__ + "/schema.rb")
 
 # insert sample data to the tables from 'fixtures/*.yml'
-Test::Unit::TestCase.fixture_path = __DIR__ + "/fixtures/"
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path)
-Test::Unit::TestCase.use_instantiated_fixtures  = true
+class Test::Unit::TestCase
+  include ActiveRecord::TestFixtures
+  self.fixture_path = __DIR__ + "/fixtures/"
+  self.use_instantiated_fixtures  = true
+end
 

@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class PrefixTest < Test::Unit::TestCase
   class User < ActiveRecord::Base
-    set_table_name :mixins
+    self.table_name = :mixins
     acts_as_bits :flags, %w( login show ), :prefix=>true
   end
 

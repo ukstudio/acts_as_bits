@@ -1,15 +1,15 @@
 sqlite:
   :adapter: sqlite
-  :dbfile: acts_as_bits_plugin_test.sqlite.db
+  :database: acts_as_bits_plugin_test.sqlite.db
 
 sqlite3:
   :adapter: sqlite3
-  :dbfile: acts_as_bits_plugin_test.sqlite3.db
+  :database: acts_as_bits_plugin_test.sqlite3.db
 
 postgresql:
   :adapter: postgresql
   :username: maiha
-  :password: 
+  :password:
   :database: test
   :min_messages: ERROR
 
