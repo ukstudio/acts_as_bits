@@ -1,7 +1,32 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class ActsAsBitsTest < Test::Unit::TestCase
-  fixtures :mixins
+
+  def mixins(sym)
+    attr = {
+      :bits_00 => {
+        :flags => "00",
+        :positions => "0000",
+        :blank_flags => "0 0"
+      },
+      :bits_01 => {
+        :flags => "01",
+        :positions => "1111",
+        :blank_flags => "0 1"
+      },
+      :bits_10 => {
+        :flags => "10",
+        :positions => "0101",
+        :blank_flags => "1 0"
+      },
+      :bits_11 => {
+        :flags => "11",
+        :positions => "",
+        :blank_flags => "1 1"
+      }
+    }
+    Mixin.create(attr[sym])
+  end
 
   def test_respond
     m = mixins(:bits_00)
