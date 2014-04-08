@@ -14,69 +14,6 @@ module ActsAsBits
 
   def self.append_features(base)
     base.extend ClassMethods
-    return if rails3?
-
-    base.extend(rails2? ? Rails2x : Rails1x)
-    base.class_eval do
-      def self.sanitize_sql_hash(*args)
-        sanitize_sql_hash_with_aab(*args)
-      end
-
-      def self.sanitize_sql_hash_for_conditions(*args)
-        sanitize_sql_hash_with_aab(*args)
-      end
-    end
-  end
-
-  module Rails1x
-    def sanitize_sql_hash_with_aab(attrs)
-      values = []
-      conditions = attrs.map do |attr, value|
-        if bit_column = bit_columns_hash[attr.to_s]
-          flag = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
-          "#{bit_column} %s '1'" % (flag ? '=' : '<>')
-        else
-          values << value
-          prefix = "#{table_name}." rescue ''
-          "#{prefix}#{connection.quote_column_name(attr)} #{attribute_condition(value)}"
-        end
-      end.join(' AND ')
-      replace_bind_variables(conditions, expand_range_bind_variables(values))
-    end
-  end
-
-  module Rails2x
-    def sanitize_sql_hash_with_aab(attrs, default_table_name = nil)
-      values = []
-      conditions = attrs.keys.map do |key|
-        value = attrs[key]
-        attr  = key.to_s
-
-        # Extract table name from qualified attribute names.
-        if attr.include?('.')
-          table_name, attr = attr.split('.', 2)
-          table_name = connection.quote_table_name(table_name)
-        else
-          table_name = default_table_name || quoted_table_name
-        end
-
-        if bit_column = bit_columns_hash[attr]
-          flag = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
-          "#{bit_column} %s '1'" % (flag ? '=' : '<>')
-        else
-          values << value
-          case ActiveRecord::Base.method(:attribute_condition).arity
-          when 1                # Rails 2.0-2.2
-            "#{table_name}.#{connection.quote_column_name(attr)} #{attribute_condition(value)}"
-          when 2                # Rails 2.3-
-            attribute_condition("#{table_name}.#{connection.quote_column_name(attr)}", value)
-          else
-            raise NotImplementedError, "unknown AR::Base#attribute_condition type"
-          end
-        end
-      end.join(' AND ')
-      replace_bind_variables(conditions, expand_range_bind_variables(values))
-    end
   end
 
   module ClassMethods

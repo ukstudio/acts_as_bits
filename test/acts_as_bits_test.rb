@@ -143,28 +143,6 @@ class ActsAsBitsTest < Test::Unit::TestCase
     assert_equal true,  mixin.position?
   end
 
-  def test_sanitize_sql_hash
-    expected = ["COALESCE(SUBSTRING(mixins.positions,1,1),'') = '1'", "COALESCE(SUBSTRING(mixins.positions,4,1),'') <> '1'"]
-    executed = Mixin.__send__(:sanitize_sql_hash, {:top => true, :left => false})
-    executed = executed.delete('`"').split(/ AND /).sort
-
-    assert_equal expected, executed
-  end
-
-  def test_search
-    conditions = {:top=>true}
-    assert_equal 1, Mixin.count(:conditions=>conditions)
-    assert_equal 1, Mixin.find(:all, :conditions=>conditions).size
-
-    conditions = {:top=>false, :right=>false, :bottom=>false, :left=>false}
-    assert_equal 2, Mixin.count(:conditions=>conditions)
-    assert_equal 2, Mixin.find(:all, :conditions=>conditions).size
-
-    conditions = {:top=>true, :right=>true, :bottom=>true, :left=>true}
-    assert_equal 1, Mixin.count(:conditions=>conditions)
-    assert_equal 1, Mixin.find(:all, :conditions=>conditions).size
-  end
-
   def test_set_all
     obj = Mixin.new
     assert_equal "00", obj.flags
