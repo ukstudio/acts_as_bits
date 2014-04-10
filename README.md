@@ -1,4 +1,4 @@
-ActsAsBits
+ActsAsBits [![Build Status](https://travis-ci.org/ukstudio/acts_as_bits.svg?branch=master)](https://travis-ci.org/ukstudio/acts_as_bits)
 ==========
 
 ActiveRecord plugin that maintains massive flags in one column
