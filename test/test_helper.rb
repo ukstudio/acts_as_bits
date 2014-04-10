@@ -20,8 +20,14 @@ require __DIR__ + '/../init'
 # create tables
 load(__DIR__ + "/schema.rb")
 
-# insert sample data to the tables from 'fixtures/*.yml'
-Test::Unit::TestCase.fixture_path = __DIR__ + "/fixtures/"
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path)
-Test::Unit::TestCase.use_instantiated_fixtures  = true
+class Mixin < ActiveRecord::Base
+  acts_as_bits :flags, %w( admin composer )
+  acts_as_bits :positions, [
+                            [:top,    "TOP"],
+                            [:right,  "RIGHT"],
+                            [:bottom, "BOTTOM"],
+                            [:left,   "LEFT"],
+                           ]
+  acts_as_bits :blank_flags, [:flag1, nil, :flag3]
+end
 

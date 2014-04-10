@@ -1,7 +1,32 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class ActsAsBitsTest < Test::Unit::TestCase
-  fixtures :mixins
+
+  def mixins(sym)
+    attr = {
+      :bits_00 => {
+        :flags => "00",
+        :positions => "0000",
+        :blank_flags => "0 0"
+      },
+      :bits_01 => {
+        :flags => "01",
+        :positions => "1111",
+        :blank_flags => "0 1"
+      },
+      :bits_10 => {
+        :flags => "10",
+        :positions => "0101",
+        :blank_flags => "1 0"
+      },
+      :bits_11 => {
+        :flags => "11",
+        :positions => "",
+        :blank_flags => "1 1"
+      }
+    }
+    Mixin.create(attr[sym])
+  end
 
   def test_respond
     m = mixins(:bits_00)
@@ -116,28 +141,6 @@ class ActsAsBitsTest < Test::Unit::TestCase
 
     mixin = Mixin.create!(:positions=>"1111")
     assert_equal true,  mixin.position?
-  end
-
-  def test_sanitize_sql_hash
-    expected = ["COALESCE(SUBSTRING(mixins.positions,1,1),'') = '1'", "COALESCE(SUBSTRING(mixins.positions,4,1),'') <> '1'"]
-    executed = Mixin.__send__(:sanitize_sql_hash, {:top => true, :left => false})
-    executed = executed.delete('`"').split(/ AND /).sort
-
-    assert_equal expected, executed
-  end
-
-  def test_search
-    conditions = {:top=>true}
-    assert_equal 1, Mixin.count(:conditions=>conditions)
-    assert_equal 1, Mixin.find(:all, :conditions=>conditions).size
-
-    conditions = {:top=>false, :right=>false, :bottom=>false, :left=>false}
-    assert_equal 2, Mixin.count(:conditions=>conditions)
-    assert_equal 2, Mixin.find(:all, :conditions=>conditions).size
-
-    conditions = {:top=>true, :right=>true, :bottom=>true, :left=>true}
-    assert_equal 1, Mixin.count(:conditions=>conditions)
-    assert_equal 1, Mixin.find(:all, :conditions=>conditions).size
   end
 
   def test_set_all

@@ -32,14 +32,6 @@ Usage
     User.create!(:update => true, :read=>false)
 
 
-Search
-======
-
-Finding methods work only on PostgreSQL, MySQL and SQL Server because we use "substring" function
-
-    User.find(:all, :conditions=>{:read=>true})
-
-
 Advanced
 ========
 
@@ -63,7 +55,7 @@ Environment
 
 tested on
 
-  * Rails 1.2.6-2.3.2
+  * Rails 3.0.0 later
 
 
 Author
