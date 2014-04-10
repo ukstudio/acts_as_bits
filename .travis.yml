@@ -1,0 +1,11 @@
+language: ruby
+
+rvm:
+  - 2.1.0
+
+gemfile:
+  - Gemfile
+
+env:
+  - "DB=sqlite3"
+
