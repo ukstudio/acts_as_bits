@@ -15,7 +15,7 @@ ActiveRecord::Base.configurations = config
 ActiveRecord::Base.establish_connection(ENV['DB'] || 'postgresql')
 
 $:.unshift __DIR__ + '/../lib'
-require __DIR__ + '/../init'
+require __DIR__ + '/../lib/acts_as_bits'
 
 # create tables
 load(__DIR__ + "/schema.rb")
