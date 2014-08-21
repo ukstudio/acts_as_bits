@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "bundler", "~> 1.5"
   s.add_development_dependency "rake"
+  s.add_development_dependency "test-unit"
   s.add_development_dependency "activesupport", "> 3.0.0"
   s.add_development_dependency "activerecord", "> 3.0.0"
   s.add_development_dependency "pg"
