@@ -68,7 +68,11 @@ module ActsAsBits
               end
 
               def #{name}=(v)
-                v = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(v) ? ?1 : ?0
+                if defined?(ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES)
+                  v = ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(v) ? ?1 : ?0
+                else
+                  v = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(v) ? ?1 : ?0
+                end
 
                 # expand target string automatically
                 if #{composed_name}.size < #{singular_name}_names.size
